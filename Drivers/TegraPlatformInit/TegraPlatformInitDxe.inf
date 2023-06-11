@@ -1,0 +1,107 @@
+#/** @file
+#
+#  Tegra Platform Specific Configuration
+#
+#  Copyright (c) 2019-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION               = 0x00010005
+  BASE_NAME                 = TegraPlatformInitDxe
+  FILE_GUID                 = d88d7bd0-17a2-49f8-9316-5e9f07209a32
+  MODULE_TYPE               = DXE_DRIVER
+  VERSION_STRING            = 1.0
+  ENTRY_POINT               = TegraPlatformInitialize
+
+[Sources]
+  TegraPlatformInitDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  ArmPkg/ArmPkg.dec
+  ArmPlatformPkg/ArmPlatformPkg.dec
+  Silicon/NVIDIA/NVIDIA.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  SecurityPkg/SecurityPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  UefiLib
+  UefiDriverEntryPoint
+  DebugLib
+  PrintLib
+  IoLib
+  PcdLib
+  TegraPlatformInfoLib
+  PlatformResourceLib
+  MemoryAllocationLib
+  DeviceTreeHelperLib
+  DtPlatformDtbLoaderLib
+  FloorSweepingLib
+  FdtLib
+  SecureBootVariableLib
+
+[Guids]
+  gEdkiiNvVarStoreFormattedGuid
+  gNVIDIAPlatformResourceDataGuid
+
+[Protocols]
+  gNVIDIAIsPresiliconDeviceGuid
+  gNVIDIAIsSiliconDeviceGuid
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable
+  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut
+  gNVIDIATokenSpaceGuid.PcdTegraMaxCoresPerCluster
+  gNVIDIATokenSpaceGuid.PcdTegraMaxClusters
+  gNVIDIATokenSpaceGuid.PcdTegraMaxSockets
+  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
+  gNVIDIATokenSpaceGuid.PcdCpuToRemoteCpuDistance
+  gNVIDIATokenSpaceGuid.PcdGpuToRemoteGpuDistance
+  gNVIDIATokenSpaceGuid.PcdCpuToLocalHbmDistance
+  gNVIDIATokenSpaceGuid.PcdCpuToRemoteHbmDistance
+  gNVIDIATokenSpaceGuid.PcdLocalHbmToCpuDistance
+  gNVIDIATokenSpaceGuid.PcdRemoteHbmToCpuDistance
+  gNVIDIATokenSpaceGuid.PcdHbmToLocalCpuDistance
+  gNVIDIATokenSpaceGuid.PcdHbmToRemoteCpuDistance
+  gNVIDIATokenSpaceGuid.PcdGpuToLocalHbmDistance
+  gNVIDIATokenSpaceGuid.PcdGpuToRemoteHbmDistance
+  gNVIDIATokenSpaceGuid.PcdHbmToLocalGpuDistance
+  gNVIDIATokenSpaceGuid.PcdHbmToRemoteGpuDistance
+  gNVIDIATokenSpaceGuid.PcdTegraStmmEnabled
+  gNVIDIATokenSpaceGuid.PcdCpuToLocalCpuReadLatency
+  gNVIDIATokenSpaceGuid.PcdCpuToLocalCpuWriteLatency
+  gNVIDIATokenSpaceGuid.PcdCpuToLocalCpuAccessBandwidth
+  gNVIDIATokenSpaceGuid.PcdCpuToRemoteCpuReadLatency
+  gNVIDIATokenSpaceGuid.PcdCpuToRemoteCpuWriteLatency
+  gNVIDIATokenSpaceGuid.PcdCpuToRemoteCpuAccessBandwidth
+  gNVIDIATokenSpaceGuid.PcdCpuToLocalHbmReadLatency
+  gNVIDIATokenSpaceGuid.PcdCpuToLocalHbmWriteLatency
+  gNVIDIATokenSpaceGuid.PcdCpuToLocalHbmAccessBandwidth
+  gNVIDIATokenSpaceGuid.PcdCpuToRemoteHbmReadLatency
+  gNVIDIATokenSpaceGuid.PcdCpuToRemoteHbmWriteLatency
+  gNVIDIATokenSpaceGuid.PcdCpuToRemoteHbmAccessBandwidth
+  gNVIDIATokenSpaceGuid.PcdGpuToLocalHbmReadLatency
+  gNVIDIATokenSpaceGuid.PcdGpuToLocalHbmWriteLatency
+  gNVIDIATokenSpaceGuid.PcdGpuToLocalHbmAccessBandwidth
+  gNVIDIATokenSpaceGuid.PcdGpuToLocalCpuReadLatency
+  gNVIDIATokenSpaceGuid.PcdGpuToLocalCpuWriteLatency
+  gNVIDIATokenSpaceGuid.PcdGpuToLocalCpuAccessBandwidth
+  gNVIDIATokenSpaceGuid.PcdGpuToRemoteCpuReadLatency
+  gNVIDIATokenSpaceGuid.PcdGpuToRemoteCpuWriteLatency
+  gNVIDIATokenSpaceGuid.PcdGpuToRemoteHbmAccessBandwidth
+  gNVIDIATokenSpaceGuid.PcdGpuToRemoteHbmReadLatency
+  gNVIDIATokenSpaceGuid.PcdGpuToRemoteHbmWriteLatency
+  gNVIDIATokenSpaceGuid.PcdGpuToRemoteCpuAccessBandwidth
+  gEfiSecurityPkgTokenSpaceGuid.PcdUserPhysicalPresence
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId
+
+[Depex]
+  TRUE
