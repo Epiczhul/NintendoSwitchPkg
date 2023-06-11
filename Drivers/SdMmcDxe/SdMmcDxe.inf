@@ -8,8 +8,6 @@
 
 [Sources.common]
   SdMmc.c
-  MmcHostOp.c
-  EfiBlkDeviceOp.c
 
 [Packages]
   ArmPkg/ArmPkg.dec
