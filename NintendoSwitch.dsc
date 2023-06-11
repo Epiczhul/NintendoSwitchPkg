@@ -372,6 +372,24 @@
 
   # Display
   NintendoSwitchPkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
+  
+  # new-drivers
+  NintendoSwitchPkg/Drivers/SdMmcControllerDxe/SdMmcControllerDxe.inf
+  NintendoSwitchPkg/Drivers/TegraControllerEnableDxe/TegraControllerEnableDxe.inf
+  NintendoSwitchPkg/Drivers/TegraCpuFreqDxe/TegraCpuFreqDxe.inf
+  NintendoSwitchPkg/Drivers/TegraGpio/TegraGpioDxe.inf
+  NintendoSwitchPkg/Drivers/TegraI2c/TegraI2cDxe.inf
+  NintendoSwitchPkg/Drivers/TegraP2UDxe/TegraP2UDxe.inf
+  NintendoSwitchPkg/Drivers/TegraPinControlDxe/TegraPinControlDxe.inf
+  NintendoSwitchPkg/Drivers/TegraPlatformBootManager/TegraPlatformBootManagerDxe.inf
+  NintendoSwitchPkg/Drivers/TegraPlatformInit/TegraPlatformInitDxe.inf
+  NintendoSwitchPkg/Drivers/TegraPwmDxe/TegraPwmDxe.inf
+  NintendoSwitchPkg/Drivers/TegraUartDxe/TegraUartDxe.inf
+  NintendoSwitchPkg/Drivers/Tpm2Dxe/Tpm2Dxe.inf
+  NintendoSwitchPkg/Drivers/UsbFirmwareDxe/UsbFirmwareDxe.inf
+  NintendoSwitchPkg/Drivers/UsbPadCtlDxe/UsbPadCtlDxe.inf
+  NintendoSwitchPkg/Drivers/XhciControllerDxe/XhciControllerDxe.inf
+  NintendoSwitchPkg/Drivers/XusbControllerDxe/XusbControllerDxe.inf
 
   # SMBIOS
   NintendoSwitchPkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf
