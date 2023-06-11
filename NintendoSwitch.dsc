@@ -404,7 +404,6 @@
   NintendoSwitchPkg/Drivers/SidebandButtonDxe/SidebandButtonDxe.inf
   NintendoSwitchPkg/Drivers/ClockManagementDxe/ClockManagementDxe.inf
   NintendoSwitchPkg/Drivers/PmicDxe/PmicDxe.inf
-  NintendoSwitchPkg/Drivers/SdMmcDxe/SdMmcDxe.inf
   NintendoSwitchPkg/Drivers/PinMuxDxe/PinMuxDxe.inf
   # NintendoSwitchPkg/Drivers/EhciPciEmulationDxe/PciEmulation.inf
   MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
