@@ -1,0 +1,54 @@
+#
+#  Copyright (c) 2011-2015, ARM Limited. All rights reserved.
+#  Copyright (c) 2014, Linaro Limited. All rights reserved.
+#  Copyright (c) 2015 - 2016, Intel Corporation. All rights reserved.
+#  Copyright (c) 2018-2019, Bingxing Wang. All rights reserved.
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+#
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = NintendoSwitchPkg
+  PACKAGE_GUID                   = 1bde5238-07ee-4ca3-a827-452fb4717ad7
+  PACKAGE_VERSION                = 0.1
+
+[Includes.common]
+  Include                        # Root include for the package
+
+[Guids.common]
+  gNintendoSwitchPkgTokenSpaceGuid = { 0x1900628e, 0x0a8a, 0x4099, { 0x8d, 0xe5, 0xf2, 0x08, 0xff, 0x80, 0xc4, 0xbf } }
+
+[Protocols]
+  gTegra210ClockManagementProtocolGuid = { 0x9c11c45d, 0xc497, 0x4e95, { 0xac, 0x18, 0x9f, 0x91, 0xca, 0x8b, 0x9a, 0xd0 } }
+  gTegraUBootClockManagementProtocolGuid = { 0x9c11c451, 0xc497, 0x4e95, { 0xac, 0x18, 0x9f, 0x91, 0xca, 0x8b, 0x9a, 0xd0 } }
+  gPmicProtocolGuid = { 0x9c11c45d, 0xc497, 0x4e95, { 0xac, 0x18, 0x9f, 0x91, 0xca, 0x8b, 0x9a, 0xd1 } }
+  gTegraPinMuxProtocolGuid = { 0x9c11c45d, 0xc497, 0x4e95, { 0xac, 0x18, 0x9f, 0x91, 0xca, 0x8b, 0x15, 0xd1 } }
+
+[PcdsFixedAtBuild.common]
+  # Simple FrameBuffer
+  gNintendoSwitchPkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0xc0000000|UINT32|0x0000a400
+  # It's actually vertical.
+  # Maybe in the future we can workaround this in EL2
+  gNintendoSwitchPkgTokenSpaceGuid.PcdMipiFrameBufferWidth|768|UINT32|0x0000a401
+  gNintendoSwitchPkgTokenSpaceGuid.PcdMipiFrameBufferHeight|1280|UINT32|0x0000a402
+  gNintendoSwitchPkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp|32|UINT32|0x0000a403
+  gNintendoSwitchPkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|720|UINT32|0x0000a405
+  gNintendoSwitchPkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|1280|UINT32|0x0000a406
+  # SMBIOS
+  gNintendoSwitchPkgTokenSpaceGuid.PcdSmbiosSystemModel|"Nintendo Switch (HAC-001)"|VOID*|0x0000a301
+  gNintendoSwitchPkgTokenSpaceGuid.PcdSmbiosProcessorModel|"NVIDIA Tegra X1"|VOID*|0x0000a302
+  gNintendoSwitchPkgTokenSpaceGuid.PcdSmbiosSystemRetailModel|"HAC-001"|VOID*|0x0000a303
+
+  # Carveout information
+  gNintendoSwitchPkgTokenSpaceGuid.PcdTrustZoneCarveoutSize|0|UINT64|0x0000a404
+
+[PcdsDynamic]
+  gNintendoSwitchPkgTokenSpaceGuid.PcdDynamicStub|0|UINT64|0x0001a400

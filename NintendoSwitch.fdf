@@ -1,0 +1,168 @@
+#
+#  Copyright (c) 2011-2015, ARM Limited. All rights reserved.
+#  Copyright (c) 2014, Linaro Limited. All rights reserved.
+#  Copyright (c) 2015 - 2016, Intel Corporation. All rights reserved.
+#  Copyright (c) 2018-2019, Bingxing Wang. All rights reserved.
+#
+#  This program and the accompanying materials
+#  are licensed and made available under the terms and conditions of the BSD License
+#  which accompanies this distribution.  The full text of the license may be found at
+#  http://opensource.org/licenses/bsd-license.php
+#
+#  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+#
+
+[FD.TEGRA210_EFI]
+BaseAddress   = 0x80110000|gArmTokenSpaceGuid.PcdFdBaseAddress  #The base address of the FLASH Device.
+Size          = 0x000E0000|gArmTokenSpaceGuid.PcdFdSize         #The size in bytes of the FLASH Device
+ErasePolarity = 1
+BlockSize     = 0x200
+NumBlocks     = 0x700
+
+# 512 bytes of configuration header & 8 bytes of image header
+0x00000000|0x000E0000
+gArmTokenSpaceGuid.PcdFvBaseAddress|gArmTokenSpaceGuid.PcdFvSize
+FV = FVMAIN_COMPACT
+
+[FV.FvMain]
+FvNameGuid         = 3c553072-5b43-4150-a40a-8c6684bdf696
+BlockSize          = 0x40
+NumBlocks          = 0         # This FV gets compressed so make it just big enough
+FvAlignment        = 8         # FV alignment and FV attributes setting.
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+  APRIORI DXE {
+    # First, install the PCD driver and call DxeInit
+    INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+
+    # Next, install cpu protocol and enable the interrupt controller
+    INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+    INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
+  }
+
+  # Architecture services (PI Stage)
+  INF MdeModulePkg/Core/Dxe/DxeMain.inf
+  INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+  
+  # UEFI Runtime services
+  INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
+  INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
+  INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
+  INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
+  INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
+  INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
+  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+
+  # Security Stub
+  INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
+
+  # ARM CPU
+  INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+  # ArmGicDxe path updated (edk2-stable202608)
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
+  INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
+
+  # Display
+  INF NintendoSwitchPkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
+
+  # Serial
+  INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
+  INF MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
+
+  # BDS
+  INF MdeModulePkg/Universal/PrintDxe/PrintDxe.inf
+  INF MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
+  INF MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf
+  INF MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
+  INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
+  INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
+  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  INF MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
+  INF MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
+  INF MdeModulePkg/Universal/DriverHealthManagerDxe/DriverHealthManagerDxe.inf
+  INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
+  INF MdeModulePkg/Application/UiApp/UiApp.inf
+
+  # SMBIOS
+  INF NintendoSwitchPkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf
+
+  # ACPI support
+  INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+  INF MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  INF MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
+  INF RuleOverride = ACPITABLE NintendoSwitchPkg/AcpiTables/AcpiTables.inf
+
+  # Drivers
+  INF NintendoSwitchPkg/Drivers/SidebandButtonDxe/SidebandButtonDxe.inf
+  INF NintendoSwitchPkg/Drivers/ClockManagementDxe/ClockManagementDxe.inf
+  INF NintendoSwitchPkg/Drivers/PmicDxe/PmicDxe.inf
+  INF NintendoSwitchPkg/Drivers/SdMmcDxe/SdMmcDxe.inf
+  INF NintendoSwitchPkg/Drivers/PinMuxDxe/PinMuxDxe.inf
+  # USB EHCI PHY init for Tegra210
+  INF NintendoSwitchPkg/Drivers/EhciPciEmulationDxe/PciEmulation.inf
+  INF MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
+  INF MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
+  INF MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
+  INF MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
+  INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
+
+  # Disk IO
+  INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
+  INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
+  INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+  INF MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
+  INF MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
+  INF FatPkg/EnhancedFatDxe/Fat.inf
+
+  # Shell
+  INF ShellPkg/Application/Shell/Shell.inf
+
+  # Linux (pretends to be UEFI shell)
+  # FILE APPLICATION = 7C04A583-9E3E-4f1c-AD65-E05268D0B4D1 {
+  #   SECTION PE32 = NintendoSwitchPkg/Tools/grubaa64.efi
+  # }
+
+[FV.FVMAIN_COMPACT]
+FvAlignment        = 8
+ERASE_POLARITY     = 1
+MEMORY_MAPPED      = TRUE
+STICKY_WRITE       = TRUE
+LOCK_CAP           = TRUE
+LOCK_STATUS        = TRUE
+WRITE_DISABLED_CAP = TRUE
+WRITE_ENABLED_CAP  = TRUE
+WRITE_STATUS       = TRUE
+WRITE_LOCK_CAP     = TRUE
+WRITE_LOCK_STATUS  = TRUE
+READ_DISABLED_CAP  = TRUE
+READ_ENABLED_CAP   = TRUE
+READ_STATUS        = TRUE
+READ_LOCK_CAP      = TRUE
+READ_LOCK_STATUS   = TRUE
+
+  # PeilessSec replaces PrePi/PeiUniCore (edk2-stable202608)
+  INF ArmPlatformPkg/PeilessSec/PeilessSec.inf
+  FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FVMAIN
+    }
+  }
+
+!include NintendoSwitchPkg/CommonFdf.fdf.inc
