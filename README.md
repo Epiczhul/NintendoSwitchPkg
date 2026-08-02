@@ -66,7 +66,9 @@ Plug in connector on the right-side Joy Con and connect to PC. Use WinDbg serial
 
 # Special thanks to
 
-- Imbushuo for making the EDK2 Package and editing Coreboot sources to work with display, as well as helping me with errors I had faced.
+- Imbushuo for making the EDK2 Package and editing Coreboot sources to work with display.
+
+- WolfLink115, mekb-turtle and tesla15 for their modifications on NintendoSwitchPkg
 
 - Fail0verflow for making the shofel2 exploit and Switch Coreboot sources.
 
