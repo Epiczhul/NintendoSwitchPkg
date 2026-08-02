@@ -58,6 +58,16 @@ SidebandButtonDxeInitialize
 {
     EFI_STATUS Status;
 
+    {
+      volatile UINT32  *DebugFb = (volatile UINT32 *)0xdfb80000;
+      UINTN             DebugFbIndex;
+
+      /* Bring-up debug: SidebandButtonDxe entry */
+      for (DebugFbIndex = 0; DebugFbIndex < 720UL * 1280UL; DebugFbIndex++) {
+        DebugFb[DebugFbIndex] = 0xFF800000; /* MAROON */
+      }
+    }
+
     // Locate PMIC protocol.
     Status = gBS->LocateProtocol(
         &gPmicProtocolGuid,

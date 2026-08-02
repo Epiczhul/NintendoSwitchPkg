@@ -24,6 +24,7 @@
 #include <Library/PcdLib.h>
 #include <Library/UefiBootManagerLib.h>
 #include <Library/UefiLib.h>
+#include <Library/DebugFb.h>
 #include <Protocol/DevicePath.h>
 #include <Protocol/EsrtManagement.h>
 #include <Protocol/GraphicsOutput.h>
@@ -491,6 +492,9 @@ PlatformBootManagerBeforeConsole (
   EFI_STATUS                    Status;
   ESRT_MANAGEMENT_PROTOCOL      *EsrtManagement;
 
+  /* Bring-up debug: BDS reached BeforeConsole */
+  DebugFbFill (DEBUG_FB_BLUE);
+
   if (GetBootModeHob() == BOOT_ON_FLASH_UPDATE) {
     DEBUG ((DEBUG_INFO, "ProcessCapsules Before EndOfDxe ......\n"));
     Status = ProcessCapsules ();
@@ -572,6 +576,9 @@ PlatformBootManagerAfterConsole (
   VOID
   )
 {
+  /* Bring-up debug: BDS reached AfterConsole (console + GOP ready) */
+  DebugFbFill (DEBUG_FB_WHITE);
+
   ConsoleSetBestMode(gST->ConOut);
 
   ESRT_MANAGEMENT_PROTOCOL      *EsrtManagement;

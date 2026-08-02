@@ -11,6 +11,7 @@
 #include <Protocol/GraphicsOutput.h>
 #include <Library/BaseLib.h>
 #include <Library/CacheMaintenanceLib.h>
+#include <Library/DebugFb.h>
 
 /// Defines
 /*
@@ -258,6 +259,45 @@ SimpleFbDxeInitialize
     EFI_STATUS          Status                  = EFI_SUCCESS;
     EFI_HANDLE          hUEFIDisplayHandle      = NULL;
 
+    /* Bring-up debug: DXE dispatch reached SimpleFbDxe */
+    DebugFbFill (DEBUG_FB_GREEN);
+
+    {
+      volatile UINT8  *Lsr    = (volatile UINT8 *)0x70006054;
+      volatile UINT8  *Thr    = (volatile UINT8 *)0x70006040;
+      volatile UINT32 *DebugFb = (volatile UINT32 *)0xdfb80000;
+      UINTN            DebugFbIndex;
+      UINT8            LsrVal;
+      volatile UINT32  Dummy;
+
+      /* Bring-up debug: probe UART TX drain before the first DXE DEBUG() print.
+         The DebugLib constructor (BaseDebugLibSerialPortConstructor ->
+         SerialPortInitialize -> tegra210_uart_init) already does LSR I/O
+         pre-GREEN, so the UART MMIO is mapped and a data abort here is not
+         expected. THRE=1 at idle proves the LSR side responds.
+         Final color meaning:
+           GREEN   -> LSR/THR read or write faulted (should not happen)
+           RED     -> THRE(0x20) clear at idle          -> UART busy/never idle
+           YELLOW  -> THRE set, wrote THR, THRE never re-set -> TX does not drain
+                      (UART TX clock/baud dead) -> DEBUG's SerialPortWrite hangs
+           BLUE    -> THR write drained (THRE re-set)   -> TX works, expect DEEPPINK */
+      LsrVal = *Lsr;
+      if ((LsrVal & 0x20) == 0) {
+        for (DebugFbIndex = 0; DebugFbIndex < 720UL * 1280UL; DebugFbIndex++) {
+          DebugFb[DebugFbIndex] = 0xFFFF0000; /* RED */
+        }
+      } else {
+        *Thr = 0x41; /* write 'A' to THR */
+        for (Dummy = 0; Dummy < 200000; Dummy++) {
+        }
+        LsrVal = *Lsr;
+        for (DebugFbIndex = 0; DebugFbIndex < 720UL * 1280UL; DebugFbIndex++) {
+          DebugFb[DebugFbIndex] = (LsrVal & 0x20) ? 0xFF0000FF  /* BLUE  */
+                                                  : 0xFFFFFF00; /* YELLOW */
+        }
+      }
+    }
+
     /* Retrieve simple frame buffer from pre-SEC bootloader */
     DEBUG((EFI_D_ERROR, "SimpleFbDxe: Retrieve MIPI FrameBuffer parameters from PCD\n"));
     UINT32              MipiFrameBufferAddr     = FixedPcdGet32(PcdMipiFrameBufferAddress);
@@ -269,6 +309,16 @@ SimpleFbDxeInitialize
     {
         DEBUG((EFI_D_ERROR, "SimpleFbDxe: Invalid FrameBuffer parameters\n"));
         return EFI_DEVICE_ERROR;
+    }
+
+    {
+      volatile UINT32  *DebugFb = (volatile UINT32 *)0xdfb80000;
+      UINTN             DebugFbIndex;
+
+      /* Bring-up debug: SimpleFbDxe past DEBUG+PCD reads+sanity check */
+      for (DebugFbIndex = 0; DebugFbIndex < 720UL * 1280UL; DebugFbIndex++) {
+        DebugFb[DebugFbIndex] = 0xFFFF1493; /* DEEPPINK */
+      }
     }
 
     /* Prepare struct */
@@ -300,6 +350,16 @@ SimpleFbDxeInitialize
         ZeroMem(mDisplay.Mode->Info, sizeof(EFI_GRAPHICS_OUTPUT_MODE_INFORMATION));
     }
 
+    {
+      volatile UINT32  *DebugFb = (volatile UINT32 *)0xdfb80000;
+      UINTN             DebugFbIndex;
+
+      /* Bring-up debug: SimpleFbDxe past both AllocatePools */
+      for (DebugFbIndex = 0; DebugFbIndex < 720UL * 1280UL; DebugFbIndex++) {
+        DebugFb[DebugFbIndex] = 0xFF1E90FF; /* DODGERBLUE */
+      }
+    }
+
     /* Set information */
     mDisplay.Mode->MaxMode = 1;
     mDisplay.Mode->Mode = 0;
@@ -329,6 +389,16 @@ SimpleFbDxeInitialize
         NULL);
 
     ASSERT_EFI_ERROR (Status);
+
+    {
+      volatile UINT32  *DebugFb = (volatile UINT32 *)0xdfb80000;
+      UINTN             DebugFbIndex;
+
+      /* Bring-up debug: SimpleFbDxe entry returned OK */
+      for (DebugFbIndex = 0; DebugFbIndex < 720UL * 1280UL; DebugFbIndex++) {
+        DebugFb[DebugFbIndex] = 0xFFADD8E6; /* LIGHTBLUE */
+      }
+    }
 
     return Status;
 

@@ -686,6 +686,16 @@ SdMmcDxeInitialize
     EFI_STATUS Status;
 	BIO_INSTANCE *Instance;
 
+    {
+      volatile UINT32  *DebugFb = (volatile UINT32 *)0xdfb80000;
+      UINTN             DebugFbIndex;
+
+      /* Bring-up debug: SdMmcDxe entry */
+      for (DebugFbIndex = 0; DebugFbIndex < 720UL * 1280UL; DebugFbIndex++) {
+        DebugFb[DebugFbIndex] = 0xFF808000; /* OLIVE */
+      }
+    }
+
     Status = gBS->LocateProtocol(
         &gTegraUBootClockManagementProtocolGuid,
         NULL,

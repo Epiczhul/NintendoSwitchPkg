@@ -224,6 +224,16 @@ ClockManagementDxeInitialize
     EFI_STATUS Status;
     EFI_HANDLE ProtoHandle = NULL;
 
+    {
+      volatile UINT32  *DebugFb = (volatile UINT32 *)0xdfb80000;
+      UINTN             DebugFbIndex;
+
+      /* Bring-up debug: ClockManagementDxe entry */
+      for (DebugFbIndex = 0; DebugFbIndex < 720UL * 1280UL; DebugFbIndex++) {
+        DebugFb[DebugFbIndex] = 0xFF008080; /* TEAL */
+      }
+    }
+
     UbInitialize();
 
     Status = gBS->InstallMultipleProtocolInterfaces(

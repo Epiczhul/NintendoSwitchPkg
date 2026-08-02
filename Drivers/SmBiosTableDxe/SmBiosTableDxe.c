@@ -754,6 +754,16 @@ SmBiosTableDxeInitialize (
 {
 	EFI_STATUS Status;
 
+	{
+	  volatile UINT32  *DebugFb = (volatile UINT32 *)0xdfb80000;
+	  UINTN             DebugFbIndex;
+
+	  /* Bring-up debug: SmBiosTableDxe entry */
+	  for (DebugFbIndex = 0; DebugFbIndex < 720UL * 1280UL; DebugFbIndex++) {
+	    DebugFb[DebugFbIndex] = 0xFFEE82EE; /* VIOLET */
+	  }
+	}
+
 	BIOSInfoUpdateSmbiosType0();
 	SysInfoUpdateSmbiosType1();
 	BoardInfoUpdateSmbiosType2();

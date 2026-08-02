@@ -498,6 +498,16 @@ PciEmulationEntryPoint(
 {
     EFI_STATUS Status;
 
+    {
+      volatile UINT32  *DebugFb = (volatile UINT32 *)0xdfb80000;
+      UINTN             DebugFbIndex;
+
+      /* Bring-up debug: EhciPciEmulationDxe entry */
+      for (DebugFbIndex = 0; DebugFbIndex < 720UL * 1280UL; DebugFbIndex++) {
+        DebugFb[DebugFbIndex] = 0xFFA52A2A; /* BROWN */
+      }
+    }
+
     Status = gBS->LocateProtocol(
         &gTegraUBootClockManagementProtocolGuid,
         NULL,

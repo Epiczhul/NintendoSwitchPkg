@@ -18,6 +18,7 @@
 #include <Library/IoLib.h>
 #include <Library/ArmPlatformLib.h>
 #include <Library/DebugLib.h>
+#include <Library/DebugFb.h>
 #include <Ppi/ArmMpCoreInfo.h>
 
 /**
@@ -44,6 +45,9 @@ ArmPlatformInitialize(
 	IN  UINTN                     MpId
 )
 {
+	/* Bring-up debug: SEC reached C entrypoint */
+	DebugFbFill (DEBUG_FB_RED);
+
 	return RETURN_SUCCESS;
 }
 
@@ -54,11 +58,14 @@ ArmPlatformInitializeSystemMemory(
 {
 }
 
+// ARM_CORE_INFO changed in modern EDK2: { Mpidr, MailboxSetAddress, MailboxGetAddress,
+// MailboxClearAddress, MailboxClearValue }. Cores are brought up via PSCI (BL31), so
+// the mailbox fields are left unused (0).
 ARM_CORE_INFO mSwitchCoreInfoTable[] = {
-  { 0x0, 0x100, },             // Cluster 0, Core 0
-  { 0x0, 0x101, },             // Cluster 0, Core 1
-  { 0x0, 0x102, },             // Cluster 0, Core 2
-  { 0x0, 0x103, },             // Cluster 0, Core 3
+  { 0x100, 0, 0, 0, 0 },       // Mpidr 0x100
+  { 0x101, 0, 0, 0, 0 },       // Mpidr 0x101
+  { 0x102, 0, 0, 0, 0 },       // Mpidr 0x102
+  { 0x103, 0, 0, 0, 0 },       // Mpidr 0x103
 };
 
 STATIC

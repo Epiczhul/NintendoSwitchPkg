@@ -94,6 +94,16 @@ PmicDxeInitialize
     EFI_HANDLE ProtoHandle = NULL;
     UINT8 bVal;
 
+    {
+      volatile UINT32  *DebugFb = (volatile UINT32 *)0xdfb80000;
+      UINTN             DebugFbIndex;
+
+      /* Bring-up debug: PmicDxe entry */
+      for (DebugFbIndex = 0; DebugFbIndex < 720UL * 1280UL; DebugFbIndex++) {
+        DebugFb[DebugFbIndex] = 0xFF000080; /* NAVY */
+      }
+    }
+
     Status = gBS->LocateProtocol(
         &gTegra210ClockManagementProtocolGuid,
         NULL,

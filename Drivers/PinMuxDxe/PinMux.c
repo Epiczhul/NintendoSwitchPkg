@@ -34,6 +34,16 @@ PinMuxDxeInitialize
     EFI_STATUS Status;
     EFI_HANDLE ProtoHandle = NULL;
 
+    {
+      volatile UINT32  *DebugFb = (volatile UINT32 *)0xdfb80000;
+      UINTN             DebugFbIndex;
+
+      /* Bring-up debug: PinMuxDxe entry */
+      for (DebugFbIndex = 0; DebugFbIndex < 720UL * 1280UL; DebugFbIndex++) {
+        DebugFb[DebugFbIndex] = 0xFF808080; /* GRAY */
+      }
+    }
+
     pinmux_clear_tristate_input_clamping();
 
     gpio_config_table(nintendo_switch_gpio_inits,
